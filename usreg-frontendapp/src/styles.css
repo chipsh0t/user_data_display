@@ -1,4 +1,98 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 20px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #dbdbdb;
+}
+
+app-root{
+    height:100%;
+}
+
+/* #searchbar-wrapper{
+    margin-top: 2rem;
+    height:auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left:70%; 
+} */
+
+mat-list-item{
+    padding-top: 2.1rem !important;
+    height:auto !important;
+    overflow:visible !important;
+}
+
+mat-list-item.searchbar-wrapper{
+    /* display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important; */
+    padding-left: 70%;
+}
+
+#pagination-wrapper{
+    height:auto;
+    margin-top: 2rem;
+}
+
+mat-drawer-container{
+    border-radius: 20px;
+}
+
+
+/* style for table */
+#table-wrapper{
+    height: auto;
+    margin-top: 3rem;
+}
+
+.datatable-delete-icon{
+    color: red;
+}
+
+table{
+    width: 100%;
+}
+
+/* styles for form */
+.user-data-form{
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-data-form-close-button-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-data-form-email-status-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-data-form-cancel-save-buttons-wrapper{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* #searchbar-container{
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    justify-items: flex-end;
+} */
