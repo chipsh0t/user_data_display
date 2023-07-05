@@ -1,127 +1,21 @@
 <mat-drawer-container>
   <mat-drawer position="end" [(opened)]="form_opened" mode="side">
-    <form class="user-data-form">
-      <div class="user-data-form-close-button-wrapper">
-        <button mat-icon-button (click)="form_opened = false">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input matInput>
-      </mat-form-field>
-      <div class="user-data-form-email-status-wrapper">
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Status</mat-label>
-          <mat-select>
-            <mat-option value="one">Active</mat-option>
-            <mat-option value="two">Inactive</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <mat-form-field appearance="outline">
-        <mat-label>Roles</mat-label>
-        <mat-select multiple>
-          <mat-option value="one">Administrator</mat-option>
-          <mat-option value="two">User</mat-option>
-          <mat-option value="three">Mainuser</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <div class="user-data-form-cancel-save-buttons-wrapper">
-        <button mat-stroked-button>
-          Cancel
-        </button>
-        <button mat-stroked-button>
-          Save
-        </button>
-      </div>
-    </form>
+    <app-data-form (form_opened)="onFormOpened($event)"></app-data-form>
   </mat-drawer>
   <mat-drawer-content>
     <mat-list>
       <mat-list-item class="searchbar-wrapper">
         <div id="searchbar-content">
-          <mat-form-field appearance="outline">
-            <mat-icon matPrefix>search</mat-icon>
-            <mat-label>Search users</mat-label>
-            <input matInput>
-          </mat-form-field>
-          <button mat-button color="primary" (click)="form_opened = !form_opened">
-            <mat-icon>add</mat-icon>
-            Add
-          </button>
+          <app-data-table-searchbar></app-data-table-searchbar>
+          <app-data-form-activation-button (form_opened)="onFormOpened($event)"></app-data-form-activation-button>
         </div>
       </mat-list-item>
       <mat-list-item id="pagination-wrapper">
-        <mat-paginator [length]="200" [pageSizeOptions]="[5, 10, 15]" aria-label="Select page" showFirstLastButtons>
-
-        </mat-paginator>
+        <app-data-table-paginator></app-data-table-paginator>
       </mat-list-item>
       <mat-list-item id="table-wrapper">
-
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-          <!-- Position Column -->
-          <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef>No.</th>
-            <td mat-cell *matCellDef="let element">{{element.position}}</td>
-          </ng-container>
-
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let element">{{element.name}}</td>
-          </ng-container>
-
-          <!-- Weight Column -->
-          <ng-container matColumnDef="weight">
-            <th mat-header-cell *matHeaderCellDef>Weight</th>
-            <td mat-cell *matCellDef="let element">{{element.weight}}</td>
-          </ng-container>
-
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="symbol">
-            <th mat-header-cell *matHeaderCellDef>Symbol</th>
-            <td mat-cell *matCellDef="let element">{{element.symbol}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="delete">
-            <th mat-header-cell *matHeaderCellDef> &nbsp; </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button>
-                <mat-icon class="datatable-delete-icon">delete</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row (click)="clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"
-            *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-        <div>
-          <h3>
-            Click Log
-          </h3>
-        </div>
-
-        <div *ngIf="!clickedRows.size">
-          Clicked rows will be logged here
-        </div>
-
-        <ul>
-          <li *ngFor="let clickedRow of clickedRows">
-            Clicked on {{clickedRow.name}}
-          </li>
-        </ul>
+        <!-- <app-data-table></app-data-table> -->
+        <app-data-table></app-data-table>
       </mat-list-item>
     </mat-list>
   </mat-drawer-content>

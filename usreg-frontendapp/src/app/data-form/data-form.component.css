@@ -1,0 +1,32 @@
+.user-data-form-wrapper{
+    margin-top:2rem;
+}
+
+.user-data-form{
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-data-form-close-button-wrapper{
+    width: 100%;
+    /* margin-top : 2rem; */
+    /* margin-right: 3rem; */
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-data-form-email-status-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-data-form-cancel-save-buttons-wrapper{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

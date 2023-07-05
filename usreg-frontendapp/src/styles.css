@@ -34,7 +34,7 @@ mat-list-item.searchbar-wrapper{
     /* display: flex !important;
     justify-content: flex-end !important;
     align-items: center !important; */
-    padding-left: 70%;
+    padding-left: 65%;
 }
 
 #pagination-wrapper{
@@ -53,16 +53,16 @@ mat-drawer-container{
     margin-top: 3rem;
 }
 
-.datatable-delete-icon{
+/* .datatable-delete-icon{
     color: red;
 }
 
 table{
     width: 100%;
-}
+} */
 
 /* styles for form */
-.user-data-form{
+/* .user-data-form{
     margin: 2rem;
     display: flex;
     flex-direction: column;
@@ -87,7 +87,7 @@ table{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-}
+} */
 
 
 /* #searchbar-container{
