@@ -1,0 +1,13 @@
+<h6 mat-dialog-title class="delete-user-dialog-message">
+    Are you sure you want to delete user: {{data.first_name}}, id: {{data.id}} ?
+</h6>
+<div mat-dialog-content>
+    <div class="delete-user-dialog-buttons-wrapper">
+        <button mat-stroked-button class="delete-user-dialog-buttons-yes" [mat-dialog-close]="'Yes'">
+            Yes
+        </button>
+        <button mat-stroked-button class="delete-user-dialog-buttons-no" [mat-dialog-close]="'No'">
+            No
+        </button>
+    </div>
+</div>

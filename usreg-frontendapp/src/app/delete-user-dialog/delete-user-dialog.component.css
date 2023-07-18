@@ -1,0 +1,20 @@
+.delete-user-dialog-message{
+    color: red;
+}
+
+.delete-user-dialog-buttons-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-user-dialog-buttons-yes{
+    /* color: red; */
+    margin-right: 15px;
+}
+
+.delete-user-dialog-buttons-no{
+    /* color: blue; */
+    margin-left: 15px;
+}

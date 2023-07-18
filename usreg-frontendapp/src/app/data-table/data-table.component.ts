@@ -1,33 +1,18 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { IUser } from '../models/user';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DeleteUserDialogComponent } from '../delete-user-dialog/delete-user-dialog.component';
+// import { DeleteUserDialogComponent } from
 //importing services
 import { UserDataService } from '../services/user-data.service';
 import { PaginationService } from '../services/pagination.service';
-
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
-
+// import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 
 
@@ -36,23 +21,78 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css'],
 })
-export class DataTableComponent{
-  
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'delete'];
+export class DataTableComponent implements OnInit, OnDestroy {
+
+  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'delete'];
   // dataSource =  new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  clickedRows = new Set<PeriodicElement>();
-  dataSource = ELEMENT_DATA;
-  // @ViewChild(MatPaginator)paginator: MatPaginator;
+  // clickedRows = new Set<PeriodicElement>();
+  // dataSource = ELEMENT_DATA;
+  public dataSource: any;
+  displayedColumns: string[] = ['email', 'first_name', 'last_name', 'social_insurance_number', 'phone_number', 'delete'];
+  private dataArr: any;
+  private subs = new Subscription();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  // @Output() form_opened = new EventEmitter<boolean>();
 
   // private paginationService:PaginationService
   // public getUsersFromServices(){
   //   let p = this.service.getUsers();
   // }
-  // ngOnInit(): void {
-  //   this.paginationService.paginator_length = ELEMENT_DATA.length;
-  // }
+
+  constructor(private _userDataService: UserDataService, public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this.subs.add(this._userDataService.getUserData().subscribe((result) => {
+      this.dataArr = result;
+      this.dataSource = new MatTableDataSource<IUser>(this.dataArr);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    },
+      (err: HttpErrorResponse) => { console.log(err) })
+    )
+  }
+
+  ngOnDestroy(): void {
+    if (this.subs) { this.subs.unsubscribe() }
+  }
 
   // ngAfterViewInit(): void {
-  //   this.dataSource.paginator = this.paginator;
   // }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+
+  // showDeleteDialog(user:IUser){
+  //   console.log(this)
+  // }
+  openDialog(user: IUser) {
+    // console.log(`Would you like to delete ${user.first_name}, id:${user.id}`)
+    let dialogRef = this.dialog.open(DeleteUserDialogComponent, {
+      // width:'400px',
+      // height:'400px',
+      data: user
+    });
+
+    //wait for dialog close
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log(`dialog result: ${result}`)
+      if (result === 'Yes') {
+
+        console.log(`user: ${user.first_name}, ${user.id} being deleted !`)
+      } else if (result === 'No') {
+
+        console.log(`user: ${user.first_name}, ${user.id} not deleted !`)
+      }
+    })
+  }
+
 }

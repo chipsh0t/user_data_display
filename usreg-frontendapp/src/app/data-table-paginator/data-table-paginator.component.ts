@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 //importing services
 import { PaginationService } from '../services/pagination.service';
+
 
 @Component({
   selector: 'app-data-table-paginator',
@@ -9,12 +10,10 @@ import { PaginationService } from '../services/pagination.service';
   styleUrls: ['./data-table-paginator.component.css']
 })
 export class DataTablePaginatorComponent{
-  
-  constructor(private paginationService:PaginationService){}
+
+  // constructor(private paginationService:PaginationService){}
 
   // ngOnInit(): void {
-  //   // this.length = this.paginationService.paginator_length;
     
   // }
-
 }
