@@ -1,20 +1,25 @@
 <mat-drawer-container>
   <mat-drawer position="end" [(opened)]="form_opened" mode="side">
-    <app-data-form (form_opened)="onFormOpened($event)"></app-data-form>
+    <app-data-form (form_opened)="onFormOpened($event)" [user_to_edit]="user_to_be_edited"></app-data-form>
   </mat-drawer>
   <mat-drawer-content>
     <mat-list>
-      <mat-list-item class="searchbar-wrapper">
-        <div id="searchbar-content">
-          <!-- <app-data-table-searchbar></app-data-table-searchbar> -->
-          <app-data-form-activation-button (form_opened)="onFormOpened($event)"></app-data-form-activation-button>
-        </div>
-      </mat-list-item>
+      <!-- <mat-list-item class="searchbar-wrapper"> -->
+      <!-- <div id="searchbar-content"> -->
+      <!-- <app-data-table-searchbar></app-data-table-searchbar> -->
+      <!-- <app-data-form-activation-button (form_opened)="onFormOpened($event)"></app-data-form-activation-button> -->
+      <!-- </div> -->
+      <!-- </mat-list-item> -->
       <!-- <mat-list-item id="pagination-wrapper">
         <app-data-table-paginator></app-data-table-paginator>
       </mat-list-item> -->
+      <mat-list-item>
+        <div class="data-form-activation-button-wrapper">
+          <app-data-form-activation-button (form_opened)="onFormOpened($event)"></app-data-form-activation-button>
+        </div>
+      </mat-list-item>
       <mat-list-item id="table-wrapper">
-        <app-data-table></app-data-table>
+        <app-data-table (form_opened)="onEditFormOpened($event)" (user_to_edit)="onUserDataReceived($event)"></app-data-table>
       </mat-list-item>
     </mat-list>
   </mat-drawer-content>

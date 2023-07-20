@@ -1,4 +1,4 @@
-import { Component, Inject, Injectable} from '@angular/core';
+import { Component, EventEmitter, Inject, Injectable, Output} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { IUser } from '../models/user';
 import {MatDialog,MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -14,6 +14,8 @@ import {MatDialog,MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'
 
 export class DeleteUserDialogComponent {
   
+  // @Output() delete_user = new EventEmitter<boolean>(); 
+
   constructor(@Inject(MAT_DIALOG_DATA) public data:IUser){}
 
 }

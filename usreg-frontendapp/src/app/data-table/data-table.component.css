@@ -33,3 +33,18 @@ th {
 th.mat-sort-header-sorted {
     color: black;
 }
+
+#datatable-status-icon{
+    color:white;
+    text-align: center;
+    border-radius: 10%;
+    padding: 5px;
+}
+
+.datatable-status-active-icon{
+    background-color: green;
+}
+
+.datatable-status-inactive-icon{
+    background-color:red;
+}
