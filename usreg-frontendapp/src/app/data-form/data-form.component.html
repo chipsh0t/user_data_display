@@ -1,48 +1,55 @@
 <div class="user-data-form-wrapper">
-    <div class="user-data-form-close-button-wrapper">
-        <button mat-icon-button (click)="this.onClick()">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-      <!-- <div *ngIf="user_to_edit">editing {{user_to_edit.first_name}}, id: {{user_to_edit.id}}</div> -->
-      <form class="user-data-form">
+  <div class="user-data-form-close-button-wrapper">
+      <button mat-icon-button (click)="this.onCancelClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <!-- <div *ngIf="user_to_edit">editing {{user_to_edit.first_name}}, id: {{user_to_edit.id}}</div> -->
+    {{user_to_edit|json}}
+    <form class="user-data-form" (ngSubmit)="this.onSaveClick($event)" [formGroup]="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="first_name" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="last_name" required>
+        </mat-form-field>
+        <div class="user-data-form-email-status-wrapper">
           <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
-            <input matInput value="{{user_to_edit?.first_name}}">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required>
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input matInput value="{{user_to_edit?.last_name}}">
-          </mat-form-field>
-          <div class="user-data-form-email-status-wrapper">
-            <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input matInput value="{{user_to_edit?.email}}">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Status</mat-label>
-              <mat-select>
-                <mat-option value="one">Active</mat-option>
-                <mat-option value="two">Inactive</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <mat-form-field appearance="outline">
-            <mat-label>Roles</mat-label>
-            <mat-select multiple>
-              <mat-option value="one">Administrator</mat-option>
-              <mat-option value="two">User</mat-option>
-              <mat-option value="three">Mainuser</mat-option>
+            <mat-label>Status</mat-label>
+            <mat-select  required formControlName="status">
+            <!-- <mat-option [value]="'Active'">Active</mat-option>
+              <mat-option [value]="'Inactive'">Inactive</mat-option> -->
+              <mat-option *ngFor="let status of statusOptions" [value]="status">{{status}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-divider></mat-divider>
-          <div class="user-data-form-cancel-save-buttons-wrapper">
-            <button mat-stroked-button type="button" (click)="this.onClick()">
-              Cancel
-            </button>
-            <button mat-stroked-button>
-              Save
-            </button>
-          </div>
-        </form>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Roles</mat-label>
+          <mat-select multiple  required formControlName="roles">
+            <!-- <mat-option [value]="'Administrator'">Administrator</mat-option>
+            <mat-option [value]="'User'">User</mat-option>
+            <mat-option [value]="'Mainuser'">Mainuser</mat-option> -->
+            <mat-option *ngFor="let role of rolesOptions" [value]="role">{{role}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <div class="user-data-form-cancel-save-buttons-wrapper">
+          <button mat-stroked-button type="button" (click)="this.onCancelClick()">
+            Cancel
+          </button>
+          <button mat-stroked-button [disabled]="!form.valid">
+            Save
+          </button>
+        </div>
+      </form>
 </div>
+
+<!-- [placeholder]="(user_to_edit?user_to_edit.status:'Status')" -->
+
+<!-- [placeholder]="(user_to_edit?user_to_edit.roles.toString():'Roles')" -->

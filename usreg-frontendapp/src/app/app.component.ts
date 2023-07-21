@@ -14,6 +14,7 @@ export class AppComponent {
   form_opened:boolean=false;
   user_to_be_edited:IUser|null = null;
   
+  
   onFormOpened(opened:boolean){
     this.form_opened=opened;
     this.user_to_be_edited = null;
@@ -25,6 +26,6 @@ export class AppComponent {
 
   onUserDataReceived(user:IUser){
     this.user_to_be_edited = user;
-    console.log(`user to be edited: ${JSON.stringify(this.user_to_be_edited)}`)
+    // console.log(`user to be edited: ${JSON.stringify(this.user_to_be_edited)}`)
   }
 }

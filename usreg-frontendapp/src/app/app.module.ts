@@ -11,7 +11,7 @@ import { DataTableSearchbarComponent } from './data-table-searchbar/data-table-s
 import { DataFormActivationButtonComponent } from './data-form-activation-button/data-form-activation-button.component';
 import { DeleteUserDialogComponent } from './delete-user-dialog/delete-user-dialog.component';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 // import { HttpClientModule } from '@angular/common/http';
 
@@ -35,6 +35,7 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 export class DataFormActivationButtonComponent {
   @Output() form_opened = new EventEmitter<boolean>();
+  @Input() is_disabled:boolean;
 
   onClick(){
     this.form_opened.emit(true);
