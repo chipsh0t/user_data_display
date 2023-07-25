@@ -43,8 +43,8 @@ export class DataFormComponent implements OnInit, OnChanges{
       if (propName === 'user_to_edit' && change.currentValue){
         //user_to_edit was updated
         this.form.patchValue(change.currentValue)
-        console.log(`current change value ${JSON.stringify(change.currentValue)}`)
-        console.log(`current form value ${JSON.stringify(this.form.value)}`)
+        // console.log(`current change value ${JSON.stringify(change.currentValue)}`)
+        // console.log(`current form value ${JSON.stringify(this.form.value)}`)
       }
     }
   }
@@ -55,6 +55,8 @@ export class DataFormComponent implements OnInit, OnChanges{
   }
 
   onSaveClick(event: Event) {
+    // let current_form_value = this.form.value;
+    // this.form.reset()
     if(this.user_to_edit){
       console.log(`edited from ${JSON.stringify(this.user_to_edit)} to ${JSON.stringify(this.form.value)}`)
     }else{
