@@ -23,12 +23,16 @@ namespace UsregAPI.Controllers
 			_userRepository = userRepository;	
 		}
 
-		
+
 		[HttpGet("find")]
-		public IActionResult Find(string search_q)
+		public async Task<IActionResult> FindAsync(string? search_q)
 		{
-			
-			return Ok(new { search_q });
+			IEnumerable<User>? users = await _userRepository.FindUsersFilteredAsync(search_q ?? "");
+			if (users is not null)
+			{
+				return Ok(users);
+			}
+			return NotFound();
 		}
 
 
@@ -39,10 +43,10 @@ namespace UsregAPI.Controllers
 			User? user_inserted = await _userRepository.CreateNewUserAsync(new_user);
 			if (user_inserted is not null) 
 			{
-				return await Task.FromResult(Ok(new UserDTO().ToUserDTO(user_inserted)));
+				return Ok(new UserDTO().ToUserDTO(user_inserted));
 			} 
 			//if insert was not completed
-			return await Task.FromResult(BadRequest());
+			return BadRequest();
 		}
 
 		
@@ -53,9 +57,9 @@ namespace UsregAPI.Controllers
 			if (res is not null) 
 			{
 				UserDTO user_dto = new UserDTO().ToUserDTO(res);
-				return await Task.FromResult(Ok(user_dto));
+				return Ok(user_dto);
 			}
-			return await Task.FromResult(NotFound());
+			return NotFound();
 		}
 
 
@@ -64,8 +68,8 @@ namespace UsregAPI.Controllers
 		{
 			User user_requested_to_update = user_to_edit_dto.ToUser();
 			User? updated_user = await _userRepository.UpdateUserAsync(user_requested_to_update);
-			if (updated_user is not null) { return await Task.FromResult(Ok(new UserDTO().ToUserDTO(updated_user))); }
-			return await Task.FromResult(NotFound());
+			if (updated_user is not null) { return Ok(new UserDTO().ToUserDTO(updated_user)); }
+			return NotFound();
 		}
 
 
@@ -76,14 +80,14 @@ namespace UsregAPI.Controllers
 			if (user_to_delete is not null) 
 			{
 				await _userRepository.RemoveUserAsync(id);
-				return await Task.FromResult(NoContent());
+				return NoContent();
 			}
-			return await Task.FromResult(NotFound());
+			return NotFound();
 		}
 
 
 		[HttpGet("reference-data/find")]
-		public async Task<IActionResult> LoadUserRoles() 
+		public async Task<IActionResult> LoadUserRolesAsync() 
 		{
 			return await Task.FromResult(Ok(_userRolesService.Roles));
 		}

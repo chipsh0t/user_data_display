@@ -20,6 +20,20 @@ namespace UsregAPI.DAL.Repositories
 			_dapperContext = dapperContext;
 		}
 
+
+		public async Task<IEnumerable<User>?> FindUsersFilteredAsync(string search_q) 
+		{
+			string stored_procedure_name = "filterUsers";
+			using (var connection = _dapperContext.CreateConnection()) 
+			{ 
+				var res = await connection.QueryAsync<User>(stored_procedure_name, 
+															new{Q = search_q},
+															commandType:CommandType.StoredProcedure);
+				return res;	
+			}
+		}
+
+
 		//save user
 		//return new user id
 		public async Task<User?> CreateNewUserAsync(User new_user)
@@ -36,10 +50,8 @@ namespace UsregAPI.DAL.Repositories
 					Status = new_user.Status,
 					Roles = new_user.Roles,
 				},commandType:CommandType.StoredProcedure);
-				//return await Task.FromResult(res.First());
-				//int inserted_user_id = res.First();
 				//return inserted user
-				return await Task.FromResult(res);
+				return res;
 			}
 		}
 
@@ -50,7 +62,7 @@ namespace UsregAPI.DAL.Repositories
 			using (var connection = _dapperContext.CreateConnection()) 
 			{ 
 				var user = await connection.QuerySingleOrDefaultAsync<User>(query, new {ID=id});
-				return await Task.FromResult(user);
+				return user;
 			}
 		}
 
@@ -68,7 +80,7 @@ namespace UsregAPI.DAL.Repositories
 					Status = user_to_edit.Status,
 					Roles = user_to_edit.Roles,
 				}, commandType:CommandType.StoredProcedure);
-				return await Task.FromResult(res);
+				return res;
 			}
 		}
 
