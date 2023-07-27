@@ -10,7 +10,7 @@ namespace UsregAPI.Shared.DTO
 {
 	public class UserDTO
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 
 		[Required]
 		public string FirstName { get; set; }
@@ -27,16 +27,18 @@ namespace UsregAPI.Shared.DTO
 		[Required]
 		public string[] Roles{ get; set; }
 
-		public UserDTO ToDTO (User user) 
+		
+		public UserDTO ToUserDTO(User user) 
 		{
-			return new UserDTO { 
-				Id = Id, 
-				FirstName = FirstName, 
-				LastName = LastName, 
-				Email = Email, 
-				Status = Status,
+			return new UserDTO
+			{
+				Id = user.Id,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Email = user.Email,
+				Status = user.Status,
 				Roles = user.Roles.Split(','),
-			};	
+			};
 		}
 
 		public  User ToUser() 
