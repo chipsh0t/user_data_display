@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteUserDialogComponent } from '../delete-user-dialog/delete-user-dialog.component';
 // import { DeleteUserDialogComponent } from
@@ -15,49 +15,49 @@ import { UserDataService } from '../services/user-data.service';
 // import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 
-const rolesOptions: string[] = ['Administrator', 'User', 'Mainuser'];
-const statusOptions: string[] = ['Active', 'Inactive'];
-let nextId = 1;
+// const rolesOptions: string[] = ['Administrator', 'User', 'Mainuser'];
+// const statusOptions: string[] = ['Active', 'Inactive'];
+// let nextId = 1;
 
-function generateUniqueId(): number {
-  return nextId++;
-}
+// function generateUniqueId(): number {
+//   return nextId++;
+// }
 
-function generateRandomUser(): IUser {
-  const firstNames: string[] = ['John', 'Jane', 'Alice', 'Bob', 'Michael', 'Laura'];
-  const lastNames: string[] = ['Smith', 'Doe', 'Johnson', 'Williams', 'Brown', 'Miller'];
+// function generateRandomUser(): IUser {
+//   const firstNames: string[] = ['John', 'Jane', 'Alice', 'Bob', 'Michael', 'Laura'];
+//   const lastNames: string[] = ['Smith', 'Doe', 'Johnson', 'Williams', 'Brown', 'Miller'];
 
-  const randomFirstName: string = firstNames[Math.floor(Math.random() * firstNames.length)];
-  const randomLastName: string = lastNames[Math.floor(Math.random() * lastNames.length)];
-  const randomEmail: string = `${randomFirstName.toLowerCase()}.${randomLastName.toLowerCase()}@example.com`;
+//   const randomFirstName: string = firstNames[Math.floor(Math.random() * firstNames.length)];
+//   const randomLastName: string = lastNames[Math.floor(Math.random() * lastNames.length)];
+//   const randomEmail: string = `${randomFirstName.toLowerCase()}.${randomLastName.toLowerCase()}@example.com`;
 
-  const randomRolesCount: number = Math.floor(Math.random() * rolesOptions.length) + 1;
-  const randomRoles: string[] = [];
-  while (randomRoles.length < randomRolesCount) {
-    const randomRole: string = rolesOptions[Math.floor(Math.random() * rolesOptions.length)];
-    if (!randomRoles.includes(randomRole)) {
-      randomRoles.push(randomRole);
-    }
-  }
+//   const randomRolesCount: number = Math.floor(Math.random() * rolesOptions.length) + 1;
+//   const randomRoles: string[] = [];
+//   while (randomRoles.length < randomRolesCount) {
+//     const randomRole: string = rolesOptions[Math.floor(Math.random() * rolesOptions.length)];
+//     if (!randomRoles.includes(randomRole)) {
+//       randomRoles.push(randomRole);
+//     }
+//   }
 
-  const randomStatus: string = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+//   const randomStatus: string = statusOptions[Math.floor(Math.random() * statusOptions.length)];
 
-  return {
-    id: generateUniqueId(),
-    first_name: randomFirstName,
-    last_name: randomLastName,
-    email: randomEmail,
-    roles: randomRoles,
-    status: randomStatus,
-  };
-}
+//   return {
+//     id: generateUniqueId(),
+//     first_name: randomFirstName,
+//     last_name: randomLastName,
+//     email: randomEmail,
+//     roles: randomRoles,
+//     status: randomStatus,
+//   };
+// }
 
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css'],
 })
-export class DataTableComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DataTableComponent implements OnInit, OnDestroy {
 
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'delete'];
   // dataSource =  new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
@@ -65,8 +65,9 @@ export class DataTableComponent implements OnInit, OnDestroy, AfterViewInit {
   // dataSource = ELEMENT_DATA;
   public dataSource: any;
   // displayedColumns: string[] = ['email', 'first_name', 'last_name', 'social_insurance_number', 'phone_number', 'delete'];
-  displayedColumns: string[] = ['email', 'first_name', 'last_name', 'roles', 'status', 'delete'];
-  // private dataArr: any;
+  displayedColumns: string[] = ['email', 'firstName', 'lastName', 'roles', 'status', 'delete'];
+  roleOptions:string[];
+  private dataArr: any;
   //MOCK DATA IMPLEMENTATION !!!!!
   //MOCK DATA IMPLEMENTATION END !!!!!
   private subs = new Subscription();
@@ -82,26 +83,47 @@ export class DataTableComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
 
   constructor(private _userDataService: UserDataService, public dialog: MatDialog) {
-    const USER_DATA: IUser[] = Array.from({ length: 30 }, generateRandomUser);
-    this.dataSource = new MatTableDataSource<IUser>(USER_DATA);
+    // const USER_DATA: IUser[] = Array.from({ length: 30 }, generateRandomUser);
+    // this.dataSource = new MatTableDataSource<IUser>(USER_DATA);
   }
 
   ngOnInit(): void {
-    // this.subs.add(this._userDataService.getUserData().subscribe((result) => {
-    //   this.dataArr = result;
-    //   this.dataSource = new MatTableDataSource<IUser>(this.dataArr);
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    // },
-    //   (err: HttpErrorResponse) => { console.log(err) })
-    // )
+    this.subs.add(this._userDataService.getUserData().subscribe((result:IUser[]) => {
+      this.dataArr = result;
+      this.dataSource = new MatTableDataSource<IUser>(this.dataArr);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      console.log(result);
+    },
+      (err: HttpErrorResponse) => { console.log(err) })
+    )
+    // this.subs.add(this._userDataService.getUserRoles().subscribe(
+    //   complete(res):console.log(res); 
+    // ));
+
+    // this.subs.add(of(this._userDataService.getUserRoles()).subscribe({
+    //   next(value) {
+    //     value.subscribe()
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // }));
+    this.subs.add(this._userDataService.getUserRoles().subscribe((result:string[])=>{
+      this.roleOptions = result;
+      console.log(this.roleOptions);
+    }))
+
+    this.subs.add(this._userDataService.getSingleUser(2n).subscribe((result:IUser)=>{
+      console.log(result);
+    }))
   }
 
-  ngAfterViewInit() {
-    //mock data usage
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  // ngAfterViewInit() {
+  //   //mock data usage
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   ngOnDestroy(): void {
     if (this.subs) { this.subs.unsubscribe() }
@@ -135,9 +157,9 @@ export class DataTableComponent implements OnInit, OnDestroy, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       // console.log(`dialog result: ${result}`)
       if (result) {
-        console.log(`user: ${user.first_name}, ${user.id} being deleted !`)
+        console.log(`user: ${user.firstName}, ${user.id} being deleted !`)
       } else {
-        console.log(`user: ${user.first_name}, ${user.id} not deleted !`)
+        console.log(`user: ${user.firstName}, ${user.id} not deleted !`)
       }
     })
   }

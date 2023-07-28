@@ -3,8 +3,22 @@ using UsregAPI.DAL.Repositories;
 using UsregAPI.DAL.Repositories.Contracts;
 using UsregAPI.Shared.Services;
 using UsregAPI.Shared.Services.Contracts;
+using Microsoft.AspNetCore.Cors;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string  corsSpecifications = "_corsSpecifications";
+
+//CORS handling
+builder.Services.AddCors(options => {
+	options.AddPolicy(name: corsSpecifications,
+		builder =>
+		{
+			builder.WithOrigins("http://localhost:4200")
+			  .AllowAnyHeader()
+			  .AllowAnyMethod();
+		});
+});
 
 
 //adding services
@@ -26,6 +40,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.UseCors(corsSpecifications);
 
 app.UseAuthorization();
 

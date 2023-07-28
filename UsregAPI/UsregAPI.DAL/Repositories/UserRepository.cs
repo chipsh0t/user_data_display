@@ -35,7 +35,6 @@ namespace UsregAPI.DAL.Repositories
 
 
 		//save user
-		//return new user id
 		public async Task<User?> CreateNewUserAsync(User new_user)
 		{
 			//var stored_procedure_name = "EXEC saveNewUser @FirstName, @LastName, @Email, @Status, @Roles";
@@ -58,10 +57,12 @@ namespace UsregAPI.DAL.Repositories
 		//single user
 		public async Task<User?> GetSingleUserAsync(int id)
 		{
-			var query = "SELECT ID, FirstName, LastName, Email, Status, Roles FROM Users WHERE ID = @id";
+			var stored_procedure_name = "getUserByID";
 			using (var connection = _dapperContext.CreateConnection()) 
 			{ 
-				var user = await connection.QuerySingleOrDefaultAsync<User>(query, new {ID=id});
+				var user = await connection.QuerySingleOrDefaultAsync<User>(stored_procedure_name, 
+																			new {ID=id},
+																			commandType:CommandType.StoredProcedure);
 				return user;
 			}
 		}
@@ -71,7 +72,6 @@ namespace UsregAPI.DAL.Repositories
 			string stored_procedure_name = "updateUser";
 			using (var connection = _dapperContext.CreateConnection())
 			{
-				//connection.ExecuteAsync !!!!!!
 				var res = await connection.QueryFirstOrDefaultAsync<User>(stored_procedure_name, new { 
 					ID = user_to_edit.Id,
 					FirstName = user_to_edit.FirstName,
@@ -89,7 +89,9 @@ namespace UsregAPI.DAL.Repositories
 			string stored_procedure_name = "removeUser";
 			using (var connection = _dapperContext.CreateConnection()) 
 			{
-				var res = await connection.ExecuteAsync(stored_procedure_name, new { ID = id }, commandType: CommandType.StoredProcedure);
+				var res = await connection.ExecuteAsync(stored_procedure_name, 
+														new { ID = id }, 
+														commandType: CommandType.StoredProcedure);
 			}
 		}
 	}

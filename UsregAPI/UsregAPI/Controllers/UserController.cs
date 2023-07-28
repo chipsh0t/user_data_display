@@ -5,6 +5,7 @@ using UsregAPI.Shared.DTO;
 using UsregAPI.Shared.Services;
 using UsregAPI.Shared.Services.Contracts;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Cors;
 
 namespace UsregAPI.Controllers
 {
@@ -30,7 +31,7 @@ namespace UsregAPI.Controllers
 			IEnumerable<User>? users = await _userRepository.FindUsersFilteredAsync(search_q ?? "");
 			if (users is not null)
 			{
-				return Ok(users);
+				return Ok(users.Select(single => new UserDTO().ToUserDTO(single)));
 			}
 			return NotFound();
 		}
@@ -91,5 +92,45 @@ namespace UsregAPI.Controllers
 		{
 			return await Task.FromResult(Ok(_userRolesService.Roles));
 		}
+
+		//[HttpGet("generate-random-users")]
+		//public async Task<IActionResult> GenerateRandomUsersAsync()
+		//{
+		//	//List<UserDTO> randUsers = new List<UserDTO>();	
+		//	string[] firstnames = new [] { "John", "Jane", "Alice", "Bob", "Michael", "Laura", "Harry", "Kate"};
+		//	string[] lastnames = new[] { "Smith", "Doe", "Johnson", "Williams", "Brown", "Miller", "Gates","Antler"};
+		//	string[] roles = _userRolesService.Roles;
+		//	string[] status = new string[] { "Active", "Inactive" };
+		//	var rand = new Random();	
+		//	//creating 50 users
+		//	for (int i = 0; i < 50; ++i) 
+		//	{
+		//		string randFirstName = firstnames[rand.Next(firstnames.Length)];
+		//		string randLastName = lastnames[rand.Next(lastnames.Length)];
+		//		string randEmail = $"{randFirstName}.{randLastName}@example.com";
+		//		string randStatus = status[rand.Next(status.Length)];
+		//		int randrolescount = rand.Next(1,roles.Length + 1);
+		//		List<string> randroles_list = new List<string>();
+		//		for (int j = 0; j < randrolescount; ++j) 
+		//		{
+		//			string role = roles[rand.Next(roles.Length)];
+		//			if (!randroles_list.Contains(role)) 
+		//			{
+		//				randroles_list.Add(role);
+		//			}
+		//		}
+		//		string[] randroles_arr = randroles_list.ToArray();
+		//		var rand_usr_dto = new UserDTO()
+		//		{
+		//			FirstName = randFirstName,
+		//			LastName = randLastName,
+		//			Email = randEmail,
+		//			Status = randStatus,
+		//			Roles = randroles_arr
+		//		};
+		//		await _userRepository.CreateNewUserAsync(rand_usr_dto.ToUser());
+		//	}
+		//	return await Task.FromResult(Ok());
+		//}
 	}
 }

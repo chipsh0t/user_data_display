@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, NgModule, Output,OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { IUser,User } from '../models/user';
+import { IUser } from '../models/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
@@ -17,8 +17,8 @@ export class DataFormComponent implements OnInit, OnChanges{
   
   // form fields
   form:FormGroup;
-  first_name:string;
-  last_name:string;
+  firstName:string;
+  lastName:string;
   email:string;
   roles:string[];
   status:string;
@@ -28,8 +28,8 @@ export class DataFormComponent implements OnInit, OnChanges{
 
   ngOnInit(){
     this.form = new FormGroup({
-      first_name : new FormControl("",Validators.required),
-      last_name : new FormControl("",Validators.required),
+      firstName : new FormControl("",Validators.required),
+      lastName : new FormControl("",Validators.required),
       email : new FormControl("",Validators.required),
       roles : new FormControl([""],Validators.required),
       status : new FormControl("",Validators.required),
