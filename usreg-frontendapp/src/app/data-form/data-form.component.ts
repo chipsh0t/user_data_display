@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, NgModule, Output,OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, Output,OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { IUser } from '../models/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserDataService } from '../services/user-data.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -8,13 +10,17 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './data-form.component.html',
   styleUrls: ['./data-form.component.css']
 })
-export class DataFormComponent implements OnInit, OnChanges{
+export class DataFormComponent implements OnInit, OnChanges, OnDestroy{
   
   //user data which has to be edited
   @Input() user_to_edit: IUser | null = null;
   
   @Output() form_opened = new EventEmitter<boolean>();
+
+  // @Output() save_clicked = new EventEmitter<boolean>();
   
+  private subs  = new Subscription();
+
   // form fields
   form:FormGroup;
   firstName:string;
@@ -23,8 +29,12 @@ export class DataFormComponent implements OnInit, OnChanges{
   roles:string[];
   status:string;
 
-  rolesOptions: string[] = ['Administrator', 'User', 'Mainuser'];
-  statusOptions: string[] = ['Active', 'Inactive'];
+  // rolesOptions: string[] = ['Administrator', 'User', 'Mainuser'];
+  // statusOptions: string[] = ['Active', 'Inactive'];
+  rolesOptions: string[];
+  statusOptions: string[];
+
+  constructor(private _userDataService:UserDataService){ }
 
   ngOnInit(){
     this.form = new FormGroup({
@@ -34,6 +44,19 @@ export class DataFormComponent implements OnInit, OnChanges{
       roles : new FormControl([""],Validators.required),
       status : new FormControl("",Validators.required),
     });
+
+    //load user roles and statuses
+    this.subs.add(this._userDataService.getUserRoles().subscribe(
+      (roles)=>{
+        this.rolesOptions = roles;
+      }
+    ));
+
+    this.subs.add(this._userDataService.getUserStatuses().subscribe(
+      (statuses)=>{
+        this.statusOptions = statuses;
+      }
+    ));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -43,28 +66,42 @@ export class DataFormComponent implements OnInit, OnChanges{
       if (propName === 'user_to_edit' && change.currentValue){
         //user_to_edit was updated
         this.form.patchValue(change.currentValue)
-        // console.log(`current change value ${JSON.stringify(change.currentValue)}`)
-        // console.log(`current form value ${JSON.stringify(this.form.value)}`)
       }
     }
   }
 
   onCancelClick() {
-    this.form.reset()
+    this.form.reset();
     this.form_opened.emit(false);
   }
-
+  
   onSaveClick(event: Event) {
     // let current_form_value = this.form.value;
     // this.form.reset()
     if(this.user_to_edit){
       console.log(`edited from ${JSON.stringify(this.user_to_edit)} to ${JSON.stringify(this.form.value)}`)
+      let user_data_passed:IUser = {id:this.user_to_edit.id, ...this.form.value}; 
+      this.subs.add(this._userDataService.updateUser(user_data_passed).subscribe(
+        (value)=>{
+          this._userDataService.edit_user_subject.next(value);
+        }
+      ));
     }else{
-      console.log(`saving new user ${JSON.stringify(this.form.value)}`)
+      //save user in db
+      this.subs.add(this._userDataService.addNewUser(this.form.value).subscribe(
+        (new_user)=>{
+          //send new user to table
+          this._userDataService.save_user_subject.next(new_user);
+        }
+      ))
     }
-    // this.onCancelClick()
+    this.onCancelClick()
   }
 
+
+  ngOnDestroy(): void {
+    if(this.subs){this.subs.unsubscribe()}
+  }
   // onCancelButtonClick(){
 
   // }

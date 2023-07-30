@@ -24,6 +24,7 @@ builder.Services.AddCors(options => {
 //adding services
 builder.Services.AddScoped<DapperContext>();
 builder.Services.AddScoped<IUserRolesService, UserRolesService>();
+builder.Services.AddScoped<IUserStatusesService, UserStatusesService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 // Add services to the container.
 

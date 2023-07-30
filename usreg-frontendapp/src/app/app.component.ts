@@ -12,6 +12,7 @@ import { IUser } from './models/user';
 export class AppComponent {
   title = 'usreg-frontendapp';
   form_opened:boolean=false;
+  // save_clicked:boolean=false;
   user_to_be_edited:IUser|null = null;
   
   

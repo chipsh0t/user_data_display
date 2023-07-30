@@ -16,12 +16,13 @@ namespace UsregAPI.Controllers
 		//injecting services
 		private IUserRolesService _userRolesService;
 		private IUserRepository _userRepository;
+		private IUserStatusesService _userStatusesService;
 
-
-		public UserController(IUserRolesService userRolesService, IUserRepository userRepository) 
+		public UserController(IUserRolesService userRolesService, IUserStatusesService userStatusesService, IUserRepository userRepository) 
 		{ 
 			_userRolesService = userRolesService;
 			_userRepository = userRepository;	
+			_userStatusesService = userStatusesService;
 		}
 
 
@@ -87,11 +88,19 @@ namespace UsregAPI.Controllers
 		}
 
 
-		[HttpGet("reference-data/find")]
+		[HttpGet("reference-data/find/roles")]
 		public async Task<IActionResult> LoadUserRolesAsync() 
 		{
 			return await Task.FromResult(Ok(_userRolesService.Roles));
 		}
+
+
+		[HttpGet("reference-data/find/statuses")]
+		public async Task<IActionResult> LoadUserStatusesAsync()
+		{
+			return await Task.FromResult(Ok(_userStatusesService.Statuses));
+		}
+
 
 		//[HttpGet("generate-random-users")]
 		//public async Task<IActionResult> GenerateRandomUsersAsync()

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IUser } from '../models/user';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 export class UserDataService {
   
   private baseURL:string = 'http://localhost:5246/api/v2/User';
+  public save_user_subject = new Subject<IUser>();
+  public edit_user_subject = new Subject<IUser>();
 
   constructor(private httpClient:HttpClient) { }
 
@@ -24,16 +26,21 @@ export class UserDataService {
   }
 
   getUserRoles():Observable<string[]>{
-    const URL:string = `${this.baseURL}/reference-data/find`;
+    const URL:string = `${this.baseURL}/reference-data/find/roles`;
     return this.httpClient.get<string[]>(URL);
   }
 
-  getSingleUser(id:bigint):Observable<IUser>{
+  getUserStatuses():Observable<string[]>{
+    const URL:string = `${this.baseURL}/reference-data/find/statuses`;
+    return this.httpClient.get<string[]>(URL);
+  }
+
+  getSingleUser(id:number):Observable<IUser>{
     const URL:string = `${this.baseURL}/find-one?id=${id}`;
     return this.httpClient.get<IUser>(URL);
   }
 
-  removeUser(id:bigint){
+  removeUser(id:number){
     const URL:string = `${this.baseURL}/remove?id=${id}`;
     return this.httpClient.delete(URL);
   }
