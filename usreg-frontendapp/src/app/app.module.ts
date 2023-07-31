@@ -6,8 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from './material/material.module';
 import { DataTableComponent } from './data-table/data-table.component';
 import { DataFormComponent } from './data-form/data-form.component';
-import { DataTablePaginatorComponent } from './data-table-paginator/data-table-paginator.component';
-import { DataTableSearchbarComponent } from './data-table-searchbar/data-table-searchbar.component';
 import { DataFormActivationButtonComponent } from './data-form-activation-button/data-form-activation-button.component';
 import { DeleteUserDialogComponent } from './delete-user-dialog/delete-user-dialog.component';
 
@@ -24,8 +22,6 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     DataTableComponent,
     DataFormComponent,
-    DataTablePaginatorComponent,
-    DataTableSearchbarComponent,
     DataFormActivationButtonComponent,
     DeleteUserDialogComponent,
   ],

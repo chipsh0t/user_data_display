@@ -4,8 +4,7 @@
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <!-- <div *ngIf="user_to_edit">editing {{user_to_edit.first_name}}, id: {{user_to_edit.id}}</div> -->
-    {{user_to_edit|json}}
+    
     <form class="user-data-form" (ngSubmit)="this.onSaveClick($event)" [formGroup]="form">
         <mat-form-field appearance="outline">
           <mat-label>Name</mat-label>
@@ -23,8 +22,6 @@
           <mat-form-field appearance="outline">
             <mat-label>Status</mat-label>
             <mat-select  required formControlName="status">
-            <!-- <mat-option [value]="'Active'">Active</mat-option>
-              <mat-option [value]="'Inactive'">Inactive</mat-option> -->
               <mat-option *ngFor="let status of statusOptions" [value]="status">{{status}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -32,9 +29,6 @@
         <mat-form-field appearance="outline">
           <mat-label>Roles</mat-label>
           <mat-select multiple  required formControlName="roles">
-            <!-- <mat-option [value]="'Administrator'">Administrator</mat-option>
-            <mat-option [value]="'User'">User</mat-option>
-            <mat-option [value]="'Mainuser'">Mainuser</mat-option> -->
             <mat-option *ngFor="let role of rolesOptions" [value]="role">{{role}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -49,7 +43,3 @@
         </div>
       </form>
 </div>
-
-<!-- [placeholder]="(user_to_edit?user_to_edit.status:'Status')" -->
-
-<!-- [placeholder]="(user_to_edit?user_to_edit.roles.toString():'Roles')" -->

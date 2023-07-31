@@ -10,12 +10,6 @@ import {MatDialog,MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'
   styleUrls: ['./delete-user-dialog.component.css']
 })
 
-// @Injectable()
-
 export class DeleteUserDialogComponent {
-  
-  // @Output() delete_user = new EventEmitter<boolean>(); 
-
   constructor(@Inject(MAT_DIALOG_DATA) public data:IUser){}
-
 }

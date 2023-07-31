@@ -21,7 +21,7 @@ export class UserDataService {
   }
 
   filteredUserData(query:string):Observable<IUser[]>{
-    const URL = `${this.baseURL}/find?seqrch_q=${query}`;
+    const URL = `${this.baseURL}/find?search_q=${query}`;
     return this.httpClient.get<IUser[]>(URL);
   }
 

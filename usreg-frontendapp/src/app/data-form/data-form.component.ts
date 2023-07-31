@@ -16,8 +16,6 @@ export class DataFormComponent implements OnInit, OnChanges, OnDestroy{
   @Input() user_to_edit: IUser | null = null;
   
   @Output() form_opened = new EventEmitter<boolean>();
-
-  // @Output() save_clicked = new EventEmitter<boolean>();
   
   private subs  = new Subscription();
 
@@ -29,8 +27,6 @@ export class DataFormComponent implements OnInit, OnChanges, OnDestroy{
   roles:string[];
   status:string;
 
-  // rolesOptions: string[] = ['Administrator', 'User', 'Mainuser'];
-  // statusOptions: string[] = ['Active', 'Inactive'];
   rolesOptions: string[];
   statusOptions: string[];
 
@@ -60,7 +56,6 @@ export class DataFormComponent implements OnInit, OnChanges, OnDestroy{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(`change: ${changes['prop']}`)
     for (let propName in changes){
       let change = changes[propName]
       if (propName === 'user_to_edit' && change.currentValue){
@@ -76,10 +71,7 @@ export class DataFormComponent implements OnInit, OnChanges, OnDestroy{
   }
   
   onSaveClick(event: Event) {
-    // let current_form_value = this.form.value;
-    // this.form.reset()
     if(this.user_to_edit){
-      console.log(`edited from ${JSON.stringify(this.user_to_edit)} to ${JSON.stringify(this.form.value)}`)
       let user_data_passed:IUser = {id:this.user_to_edit.id, ...this.form.value}; 
       this.subs.add(this._userDataService.updateUser(user_data_passed).subscribe(
         (value)=>{
@@ -102,10 +94,6 @@ export class DataFormComponent implements OnInit, OnChanges, OnDestroy{
   ngOnDestroy(): void {
     if(this.subs){this.subs.unsubscribe()}
   }
-  // onCancelButtonClick(){
-
-  // }
-
 }
 
 
